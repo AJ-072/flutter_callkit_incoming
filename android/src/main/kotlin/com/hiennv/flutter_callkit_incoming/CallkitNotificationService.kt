@@ -9,8 +9,11 @@ import android.os.Build
 import android.os.Bundle
 import android.os.IBinder
 import androidx.core.content.ContextCompat
+import androidx.core.app.NotificationManagerCompat
 
 class CallkitNotificationService : Service() {
+
+    private var isServiceRunningInForeground = false
 
     companion object {
 
@@ -94,14 +97,21 @@ class CallkitNotificationService : Service() {
         val callkitNotification =
             getCallkitNotificationManager()?.getOnGoingCallNotification(bundle, false)
         if (callkitNotification != null) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                startForeground(
-                    callkitNotification.id,
-                    callkitNotification.notification,
-                    ServiceInfo.FOREGROUND_SERVICE_TYPE_PHONE_CALL
-                )
+            if (isServiceRunningInForeground) {
+                // Service already running — just update the notification
+                NotificationManagerCompat.from(this)
+                    .notify(callkitNotification.id, callkitNotification.notification)
             } else {
-                startForeground(callkitNotification.id, callkitNotification.notification)
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                    startForeground(
+                        callkitNotification.id,
+                        callkitNotification.notification,
+                        ServiceInfo.FOREGROUND_SERVICE_TYPE_PHONE_CALL
+                    )
+                } else {
+                    startForeground(callkitNotification.id, callkitNotification.notification)
+                }
+                isServiceRunningInForeground = true
             }
         }
     }
@@ -129,6 +139,7 @@ class CallkitNotificationService : Service() {
         super.onDestroy()
         // Don't destroy the notification manager here as it's shared across the app
         // The plugin will handle cleanup when all engines are detached
+        isServiceRunningInForeground = false
     }
 
     override fun onBind(p0: Intent?): IBinder? {
