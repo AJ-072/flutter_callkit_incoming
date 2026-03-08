@@ -182,16 +182,16 @@ class CallkitNotificationManager(
         notificationBuilder?.setOngoing(true)
         notificationBuilder?.setAutoCancel(false)
         notificationBuilder?.setWhen(System.currentTimeMillis())
-//        notificationBuilder?.setTimeoutAfter(
-//            data.getLong(
-//                CallkitConstants.EXTRA_CALLKIT_DURATION, 0L
-//            )
-//        )
+        notificationBuilder?.setTimeoutAfter(
+            data.getLong(
+                CallkitConstants.EXTRA_CALLKIT_DURATION, 0L
+            )
+        )
         notificationBuilder?.setOnlyAlertOnce(false)
         notificationBuilder?.setSound(null)
-//        notificationBuilder?.setFullScreenIntent(
-//            getActivityPendingIntent(notificationId, data), true
-//        )
+        notificationBuilder?.setFullScreenIntent(
+            getActivityPendingIntent(notificationId, data), true
+        )
         notificationBuilder?.setContentIntent(getActivityPendingIntent(notificationId, data))
         notificationBuilder?.setDeleteIntent(getTimeOutPendingIntent(notificationId, data))
         val typeCall = data.getInt(CallkitConstants.EXTRA_CALLKIT_TYPE, -1)
