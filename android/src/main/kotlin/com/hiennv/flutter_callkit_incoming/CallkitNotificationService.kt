@@ -120,7 +120,7 @@ class CallkitNotificationService : Service() {
     private fun showIncomingNotification(bundle: Bundle) {
         val manager = getCallkitNotificationManager() ?: return
         val callkitNotification = manager.getIncomingNotification(bundle) ?: return
-        manager.callkitSoundPlayerManager?.play(bundle)
+        manager.playSound(bundle)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             startForeground(
                 callkitNotification.id,

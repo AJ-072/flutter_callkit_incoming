@@ -1003,6 +1003,10 @@ class CallkitNotificationManager(
         }
     }
 
+    fun playSound(data: Bundle){
+        callkitSoundPlayerManager?.play(data)
+    }
+
     @SuppressLint("MissingPermission")
     fun showOngoingCallNotification(data: Bundle, isConnected: Boolean?) {
         val callkitNotification = getOnGoingCallNotification(data, isConnected)
