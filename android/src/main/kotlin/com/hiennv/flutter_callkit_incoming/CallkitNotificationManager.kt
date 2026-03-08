@@ -173,7 +173,7 @@ class CallkitNotificationManager(
 
         notificationBuilder = NotificationCompat.Builder(context, NOTIFICATION_CHANNEL_ID_INCOMING)
         notificationBuilder?.setChannelId(NOTIFICATION_CHANNEL_ID_INCOMING)
-        notificationBuilder?.setDefaults(NotificationCompat.DEFAULT_VIBRATE)
+        notificationBuilder?.setDefaults(0)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             notificationBuilder?.setCategory(NotificationCompat.CATEGORY_CALL)
             notificationBuilder?.priority = NotificationCompat.PRIORITY_MAX
@@ -182,16 +182,16 @@ class CallkitNotificationManager(
         notificationBuilder?.setOngoing(true)
         notificationBuilder?.setAutoCancel(false)
         notificationBuilder?.setWhen(System.currentTimeMillis())
-        notificationBuilder?.setTimeoutAfter(
-            data.getLong(
-                CallkitConstants.EXTRA_CALLKIT_DURATION, 0L
-            )
-        )
-        notificationBuilder?.setOnlyAlertOnce(true)
+//        notificationBuilder?.setTimeoutAfter(
+//            data.getLong(
+//                CallkitConstants.EXTRA_CALLKIT_DURATION, 0L
+//            )
+//        )
+        notificationBuilder?.setOnlyAlertOnce(false)
         notificationBuilder?.setSound(null)
-        notificationBuilder?.setFullScreenIntent(
-            getActivityPendingIntent(notificationId, data), true
-        )
+//        notificationBuilder?.setFullScreenIntent(
+//            getActivityPendingIntent(notificationId, data), true
+//        )
         notificationBuilder?.setContentIntent(getActivityPendingIntent(notificationId, data))
         notificationBuilder?.setDeleteIntent(getTimeOutPendingIntent(notificationId, data))
         val typeCall = data.getInt(CallkitConstants.EXTRA_CALLKIT_TYPE, -1)
@@ -900,7 +900,7 @@ class CallkitNotificationManager(
                         vibrationPattern = longArrayOf(0, 1000, 500, 1000, 500)
                         lightColor = Color.RED
                         enableLights(true)
-                        enableVibration(true)
+                        enableVibration(false)
                         setSound(null, null)
                     }
                 }
@@ -919,7 +919,7 @@ class CallkitNotificationManager(
                     vibrationPattern = longArrayOf(0, 1000)
                     lightColor = Color.RED
                     enableLights(true)
-                    enableVibration(true)
+                    enableVibration(false)
                 }
                 channelMissedCall.importance = NotificationManager.IMPORTANCE_HIGH
                 createNotificationChannel(channelMissedCall)
